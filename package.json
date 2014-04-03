@@ -1,0 +1,25 @@
+{
+  "name": "altr-accesors",
+  "version": "0.0.0",
+  "description": "altr-accesors =============",
+  "main": "index.js",
+  "scripts": {
+    "test": "node test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/hayes/altr-accesors.git"
+  },
+  "author": "Michael Hayes",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/hayes/altr-accesors/issues"
+  },
+  "homepage": "https://github.com/hayes/altr-accesors",
+  "dependencies": {
+    "debounce": "0.0.3"
+  },
+  "devDependencies": {
+    "tape": "^2.12.2"
+  }
+}
