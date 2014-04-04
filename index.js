@@ -2,6 +2,7 @@ var add_operators = require('./lib/operators')
   , create_accesor = require('./lib/create')
   , add_lookup = require('./lib/lookup')
   , add_filter = require('./lib/filter')
+  , add_parens = require('./lib/parens')
   , debounce = require('just-debounce')
   , add_types = require('./lib/types')
   , types = []
@@ -9,6 +10,7 @@ var add_operators = require('./lib/operators')
 module.exports = accessors
 
 // order is important
+add_parens(types)
 add_types(types)
 add_operators(types)
 add_filter(types)
