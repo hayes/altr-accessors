@@ -17,7 +17,7 @@
   },
   "homepage": "https://github.com/hayes/altr-accessors",
   "dependencies": {
-    "debounce": "0.0.3"
+    "just-debounce": "0.0.1"
   },
   "devDependencies": {
     "tape": "^2.12.2"

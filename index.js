@@ -2,8 +2,8 @@ var add_operators = require('./lib/operators')
   , create_accesor = require('./lib/create')
   , add_lookup = require('./lib/lookup')
   , add_filter = require('./lib/filter')
+  , debounce = require('just-debounce')
   , add_types = require('./lib/types')
-  , debounce = require('debounce')
   , types = []
 
 module.exports = accessors
@@ -14,21 +14,21 @@ add_filter(types)
 add_types(types)
 add_lookup(types)
 
-accessors.prototype._create = create_accesor
+accessors.prototype.create_part = create_accesor
 accessors.prototype.add_filter = add_filter
 accessors.prototype.create = create
 accessors.prototype.types = types
 
-function accessors(filters, debounce) {
+function accessors(filters, delay) {
   if(!(this instanceof accessors)) {
-    return new accessors(filters, debounce)
+    return new accessors(filters, delay)
   }
 
-  if(!debounce && debounce !== false) {
-    debounce = 0
+  if(!delay && delay !== false) {
+    delay = 0
   }
 
-  this.debounce = debounce
+  this.delay = delay
   this.filters = filters || {}
 }
 
@@ -37,8 +37,8 @@ function add_filter(name, fn) {
 }
 
 function create(str, change) {
-  return this._create(
+  return this.create_part(
       str
-    , this.debounce === false ? change : debounce(change, this.debounce)
+    , this.delay === false ? change : debounce(change, this.delay)
   )
 }
