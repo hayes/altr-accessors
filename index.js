@@ -10,8 +10,8 @@ var add_operators = require('./lib/operators')
 module.exports = accessors
 
 // order is important
-add_parens(types)
 add_types(types)
+add_parens(types)
 add_operators(types)
 add_filter(types)
 add_lookup(types)
@@ -41,6 +41,6 @@ function add_filter(name, fn) {
 function create(str, change) {
   return this.create_part(
       str
-    , this.delay === false ? change : debounce(change, this.delay)
+    , this.delay === false ? change : debounce(change, this.delay, false, true)
   )
 }
