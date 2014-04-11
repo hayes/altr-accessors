@@ -1,6 +1,6 @@
 {
   "name": "altr-accessors",
-  "version": "0.0.14",
+  "version": "0.0.15",
   "description": "altr-accessors =============",
   "main": "index.js",
   "scripts": {
