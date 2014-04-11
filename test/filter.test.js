@@ -1,8 +1,8 @@
 var accessor = require('../index')()
   , test = require('tape')
 
-accessor.filters.test = function(part, change) {
-  return this.create_part(part, function(val) {
+accessor.filters.test = function(parts, change) {
+  return this.create_part(parts[0], function(val) {
     change(2 * val)
   })
 }

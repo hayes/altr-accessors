@@ -6,6 +6,7 @@ var add_operators = require('./lib/operators')
   , debounce = require('just-debounce')
   , add_types = require('./lib/types')
   , add_arrow = require('./lib/arrow')
+  , split = require('./lib/split')
   , types = []
 
 module.exports = accessors
@@ -22,6 +23,7 @@ accessors.prototype.create_part = create_accesor
 accessors.prototype.add_filter = add_filter
 accessors.prototype.create = create
 accessors.prototype.types = types
+accessors.prototype.split = split
 
 function accessors(filters, delay) {
   if(!(this instanceof accessors)) {
