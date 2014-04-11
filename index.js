@@ -12,9 +12,9 @@ module.exports = accessors
 
 // order is important
 add_types(types)
+add_arrow(types)
 add_filter(types)
 add_parens(types)
-add_arrow(types)
 add_operators(types)
 add_lookup(types)
 
