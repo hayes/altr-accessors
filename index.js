@@ -43,8 +43,32 @@ function add_filter(name, fn) {
 }
 
 function create(str, change) {
-  return this.create_part(
+  var part = this.create_part(
       str
-    , this.delay === false ? change : debounce(change, this.delay, false, true)
+    , this.delay === false ? update : debounce(change, this.delay, false, true)
   )
+
+  var sync = false
+    , out
+
+  return write
+
+  function write(data) {
+    sync = true
+    out = null
+    part(data)
+    sync = false
+
+    if(out) {
+      change.apply(null, out)
+    }
+  }
+
+  function update(val, ctx) {
+    out = [].slice.call(arguments)
+
+    if(!sync) {
+      change.apply(null, out)
+    }
+  }
 }
