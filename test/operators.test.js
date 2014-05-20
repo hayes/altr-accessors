@@ -1,6 +1,22 @@
 var accessor = require('../index')()
   , test = require('tape')
 
+test('ternary operator', function(t) {
+  t.plan(3)
+
+  accessor.create('0 ? 1 : 2', function(val) {
+    t.strictEqual(val, 2)
+  })()
+
+  accessor.create('5 ? 1 : 2', function(val) {
+    t.strictEqual(val, 1)
+  })()
+
+  accessor.create('0 ? 1 ? 2 : 3 : 4 ? 5 : 6', function(val) {
+    t.strictEqual(val, 5)
+  })()
+})
+
 test('binary operators', function(t) {
   t.plan(29)
 
