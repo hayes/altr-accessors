@@ -42,13 +42,14 @@ function add_filter(name, fn) {
   this.filters[name] = fn
 }
 
-function create(str, change) {
+function create(str, change, all) {
   var part = this.create_part(
       str
     , this.delay === false ? update : debounce(change, this.delay, false, true)
   )
 
   var sync = false
+    , prev = {}
     , out
 
   return write
@@ -65,7 +66,12 @@ function create(str, change) {
   }
 
   function update(val, ctx) {
+    if(!all && typeof val !== 'object' && val === prev) {
+      return
+    }
+
     out = [].slice.call(arguments)
+    prev = val
 
     if(!sync) {
       change.apply(null, out)
