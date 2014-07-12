@@ -106,7 +106,7 @@ twenty({x: 4}) // logs 20
 
 ###### without the arraow
 ```
-accessors.add_filter('double', function(args, change) {
+accessors.add_filter('mult', function(args, change) {
   var value = 0
 
   var get_value = this.create_part(args[0], function(val, context) {
@@ -114,7 +114,7 @@ accessors.add_filter('double', function(args, change) {
         get_factor(val, context)
     })
 
-    var get_factor = this.create_part(args[0], function(val) {
+    var get_factor = this.create_part(args[1], function(val) {
       factor = val
         chage(value * factor)
     })
