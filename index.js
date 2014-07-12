@@ -1,7 +1,7 @@
 var add_operators = require('./lib/operators')
   , create_accesor = require('./lib/create')
+  , add_filters = require('./lib/filter')
   , add_lookup = require('./lib/lookup')
-  , add_filter = require('./lib/filter')
   , add_parens = require('./lib/parens')
   , debounce = require('just-debounce')
   , add_types = require('./lib/types')
@@ -14,7 +14,7 @@ module.exports = accessors
 // order is important
 add_types(types)
 add_arrow(types)
-add_filter(types)
+add_filters(types)
 add_parens(types)
 add_operators(types)
 add_lookup(types)
@@ -55,12 +55,14 @@ function create(str, change, all) {
   return write
 
   function write(data) {
+    var _out = {}
+
     sync = true
-    out = null
+    out = _out
     part(data)
     sync = false
 
-    if(out) {
+    if(out !== _out) {
       change.apply(null, out)
     }
   }

@@ -18,7 +18,7 @@ test('ternary operator', function(t) {
 })
 
 test('binary operators', function(t) {
-  t.plan(29)
+  t.plan(31)
 
   accessor.create('0 || 1', function(val) {
     t.strictEqual(val, 1)
@@ -65,6 +65,12 @@ test('binary operators', function(t) {
   accessor.create('1 < 1', function(val) {
     t.strictEqual(val, false)
   })()
+  accessor.create('"a" in b', function(val) {
+    t.strictEqual(val, true)
+  })({b: {a: 1}})
+  accessor.create('a instanceof b', function(val) {
+    t.strictEqual(val, true)
+  })({a: new Object, b: Object})
   accessor.create('1 <= 2', function(val) {
     t.strictEqual(val, true)
   })()
