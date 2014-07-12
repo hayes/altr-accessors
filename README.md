@@ -25,7 +25,7 @@ accessors may also contain litteral numbers and strings.
 `"abc"`
 
 ### Operators
-altr-accessors suport a most of javascripts operators out of the box (including parenthasis, and follow javascripts order of operations.
+altr-accessors suport a most of javascripts operators out of the box (including parentheses, and follow javascripts order of operations.
 
 ##### Unary:
 * `!`,  `+`,  `-`, `~`
@@ -111,12 +111,12 @@ accessors.add_filter('mult', function(args, change) {
 
   var get_value = this.create_part(args[0], function(val, context) {
       value = val
-        get_factor(val, context)
+      get_factor(val, context)
     })
 
     var get_factor = this.create_part(args[1], function(val) {
       factor = val
-        chage(value * factor)
+      change(value * factor)
     })
 
   return get_value
