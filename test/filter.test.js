@@ -1,18 +1,18 @@
 var accessor = require('../index')()
   , test = require('tape')
 
-accessor.add_filter('double', double)
-accessor.add_filter('double_scope', double_scope)
+accessor.addFilter('double', double)
+accessor.addFilter('double_scope', double_scope)
 
-function double(parts, change) {
-  return this.create_part(parts[0], function(val) {
-    change(2 * val)
-  })
+function double(change) {
+  return function(args, ctx) {
+    change(2 * args[0], ctx)
+  }
 }
 
-function double_scope(parts, change) {
-  return function(val) {
-    change(2 * val)
+function double_scope(change) {
+  return function(args, ctx) {
+    change(2 * ctx, ctx)
   }
 }
 

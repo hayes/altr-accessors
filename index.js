@@ -3,6 +3,7 @@ var add_operators = require('./lib/operators')
   , add_filters = require('./lib/filter')
   , add_lookup = require('./lib/lookup')
   , add_parens = require('./lib/parens')
+  , create_list = require('./lib/list')
   , debounce = require('just-debounce')
   , add_types = require('./lib/types')
   , add_arrow = require('./lib/arrow')
@@ -19,8 +20,9 @@ add_parens(types)
 add_operators(types)
 add_lookup(types)
 
-accessors.prototype.create_part = create_accesor
-accessors.prototype.add_filter = add_filter
+accessors.prototype.createPart = create_accesor
+accessors.prototype.createParts = create_list
+accessors.prototype.addFilter = add_filter
 accessors.prototype.create = create
 accessors.prototype.types = types
 accessors.prototype.split = split
@@ -43,7 +45,7 @@ function add_filter(name, fn) {
 }
 
 function create(str, change, all) {
-  var part = this.create_part(
+  var part = this.createPart(
       str
     , this.delay === false ? update : debounce(change, this.delay, false, true)
   )

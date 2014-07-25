@@ -46,88 +46,36 @@ filters a simple way to transform the values you are accessing in an accessor.
 
 ###### to add a filter that doubles a value:
 ```
-accessors.add_filter('double', function(args, change) {
-  return function(val) {
-    change(val * 2)
+accessors.addFilter('double', function(args, change) {
+  return function(args, ctx) {
+    change(args[0] * 2)
   }
 })
 
-var ten = accessors.create('5 -> double()', function(val) {
-  console.log(val)
-})
-
-ten() //logs 10
+accessors.create('double(5)', console.log)() //logs 10
+accessors.create('double(double(5))', console.log)() //logs 20
 ```
 
-###### to add a filter that multiplies a constant
+###### to add a filter that multiplies
 ```
-accessors.add_filter('mult', function(args, change) {
-  return function(val) {
-    change(val * +args[0])
+accessors.addFilter('mult', function(args, change) {
+  return function(args, ctx) {
+    change(args[0] * args[1])
   }
 })
 
-var ten = accessors.create('5 -> mult(2)', function(val) {
-  console.log(val)
-})
-
-ten() //logs 10
+accessors.create('mult(mult(4, 5), x)', console.log)({x: 3}) //logs 60
 ```
 
-###### to add a filter that multiplies a variable
+###### using the arrow and context
 ```
-accessors.add_filter('mult', function(args, change) {
-  var get_factor = this.create_part(args[0], function(factor) {
-    change(value * factor)
-  })
-
-  var value = 0
-
-  return function(val, context) {
-    value = val
-    get_factor(val, context)
+accessors.addFilter('mult', function(args, change) {
+  return function(args, ctx) {
+    change(ctx * args[0])
   }
 })
 
-// this still works
-var ten = accessors.create('5 -> mult(2)', function(val) {
-  console.log(val)
-})
-
-ten() //logs 10
-
-// you can now multiply by x from the current context
-var twenty = accessors.create('5 -> mult(x)', function(val) {
-  console.log(val)
-})
-
-twenty({x: 4}) // logs 20
-```
-
-###### without the arraow
-```
-accessors.add_filter('mult', function(args, change) {
-  var value = 0
-
-  var get_value = this.create_part(args[0], function(val, context) {
-      value = val
-      get_factor(val, context)
-    })
-
-    var get_factor = this.create_part(args[1], function(val) {
-      factor = val
-      change(value * factor)
-    })
-
-  return get_value
-})
-
-var ten = accessors.create('mult(a, b)', function(val) {
-  console.log(val)
-})
-
-mult({a: 5, b: 2}) // logs 10
-mult({a: 10, b: 5}) // logs 50
+accessors.create('x -> mult(5)', console.log)({x: 3}) //logs 15
 ```
 
 
@@ -145,26 +93,31 @@ creates an accessors instance with its own set of filters.
 
 creates a new lookup function. this function takes a state, and if the new state changes the output, calls the callback with the new state.
 
-##### `instance.create_part(str, change)` -> update function
+##### `instance.createPart(str, change)` -> update function
 * str: the accessor string to look up
 * change: a callback that gets called any time the state changes
 
 the same as create, but does not debounce changes and will callback even if the resulting value did not change.
 
-##### `instance.add_filter(name, constructor)`
+##### `instance.createParts(parts, change)` -> update function
+* parts: an array of strings
+* change: a callback that gets called with an array of values any time any part changes.
+
+similar to createPart, but takes an array of parts, and calls back with an array of values.
+
+##### `instance.addFilter(name, constructor)`
 * name: name of the filter
 * constructor: a filter constructor function.
 
 Adds a filter for use in lookups created by this insance. constructor should implement the api below.
 
-###### `filter_constructor(args, change)` -> update
-* args: an array of string arguments passed to the filter.
+###### `filter_constructor(change)` -> update
 * change: a callback to call anytime the filters result updates
-* update: will be called with 2 arguments (value, context) any time the state changes.  value is the current value of the lookup, and context is the original state for the lookup.
+* update: will be called with 2 arguments (args, context) any time the state changes. args is an array containing the current value of each argument to the filter, context is the current context that lookups are performed on.
 
 when update is called, the filter should look at the passed in value and call change with the filters result and the original context. (passing context is not required but is recomended).
 
-The filter constructor will be called with the altr-accessor instance as its context so instance methods such as create_part and split will be avaialbe on `this`
+The filter constructor will be called with the altr-accessor instance as its context so instance methods such as createPart and split will be avaialbe on `this`
 
 ##### `instance.split(str, key, pairs, all)` -> Array of strings
 * str: the original string to split
@@ -173,6 +126,3 @@ The filter constructor will be called with the altr-accessor instance as its con
 * all: like the g flag in a regexp, if true will split all rather just on the first instance of key
 
 Splits a string on a key, but does not split in the middle of matching pairs (parens by default).
-
-
-
